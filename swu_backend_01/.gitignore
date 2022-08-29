@@ -38,3 +38,6 @@ out/
 
 ### for MAC ###
 .DS_Store
+
+### env ###
+./src/main/resources/env.properties
