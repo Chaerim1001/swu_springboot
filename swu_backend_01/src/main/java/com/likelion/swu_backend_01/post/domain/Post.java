@@ -1,6 +1,7 @@
 package com.likelion.swu_backend_01.post.domain;
 
 import com.likelion.swu_backend_01.post.repository.dto.PostCreateDto;
+import com.likelion.swu_backend_01.post.repository.dto.PostUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,5 +36,11 @@ public class Post {
     public Post (PostCreateDto postCreateDto){
         this.title = postCreateDto.getTitle();
         this.contents = postCreateDto.getContents();
+    }
+
+    public Long update (PostUpdateDto postUpdateDto){
+        this.title = postUpdateDto.getTitle();
+        this.contents = postUpdateDto.getContents();
+        return this.getId();
     }
 }
