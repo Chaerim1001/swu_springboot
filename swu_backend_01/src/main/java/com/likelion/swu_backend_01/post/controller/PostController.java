@@ -15,5 +15,10 @@ public class PostController {
     public Post createPost(@RequestBody PostCreateDto postCreateDto) {
        return this.postService.createPost(postCreateDto);
     }
+
+    @GetMapping("/post/{id}")
+    public Post getPostById(@PathVariable Long id){
+        return this.postService.findPostById(id);
+    }
 }
 

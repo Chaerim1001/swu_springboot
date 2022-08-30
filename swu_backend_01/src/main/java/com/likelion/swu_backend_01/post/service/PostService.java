@@ -16,4 +16,10 @@ public class PostService {
         return postRepository.save(new_post);
     }
 
+    public Post findPostById(Long id){
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found"));
+    }
+
+
 }
