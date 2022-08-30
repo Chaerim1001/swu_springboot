@@ -7,6 +7,8 @@ import com.likelion.swu_backend_01.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class PostController {
@@ -30,6 +32,11 @@ public class PostController {
     @DeleteMapping("/post/{id}")
     public Long deletePost(@PathVariable Long id) {
         return this.postService.deletePost(id);
+    }
+
+    @GetMapping("/posts")
+    public List<Post> getAllPosts(){
+        return this.postService.getAllPosts();
     }
 }
 

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -34,5 +36,9 @@ public class PostService {
     public Long deletePost(Long id){
         postRepository.deleteById(id);
         return id;
+    }
+
+    public List<Post> getAllPosts(){
+        return postRepository.findAll();
     }
 }
