@@ -13,5 +13,4 @@ public class SwuBackend01Application {
     public static void main(String[] args) {
         SpringApplication.run(SwuBackend01Application.class, args);
     }
-
 }
