@@ -1,6 +1,7 @@
 package com.likelion.swu_backend_01.post.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,23 +12,23 @@ import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Post {
+public class Board extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(length= 100, nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String contents;
 
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+    @Builder
+    public Board(Long id, String title, String contents){
+        this.id=id;
+        this.title=title;
+        this.contents=contents;
+    }
 }
