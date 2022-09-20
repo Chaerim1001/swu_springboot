@@ -4,7 +4,9 @@ package com.likelion.swu_backend_01.post.controller;
 import com.likelion.swu_backend_01.post.dto.BoardDto;
 import com.likelion.swu_backend_01.post.service.BoardService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -30,4 +32,12 @@ public class BoardController {
         boardService.savePost(boardDto);
         return "redirect:/";
     }
+
+    @GetMapping("/post/{no}")
+    public String detail(@PathVariable("no") Long id, Model model){
+        BoardDto boardDto = boardService.getPost(id);
+        model.addAttribute("boardDto", boardDto);
+        return "board/detail.html";
+    }
+
 }

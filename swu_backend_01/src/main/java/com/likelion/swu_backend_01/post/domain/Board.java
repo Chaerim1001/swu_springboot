@@ -1,16 +1,14 @@
 package com.likelion.swu_backend_01.post.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Data
+@Getter
 @NoArgsConstructor
 @Entity
 public class Board extends BaseTimeEntity{
