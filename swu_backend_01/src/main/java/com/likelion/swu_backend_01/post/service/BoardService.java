@@ -43,5 +43,9 @@ public class BoardService {
 
         return id;
     }
+    @Transactional
+    public void deletePost(Long id) {
+        boardRepository.deleteById(id);
+    }
 }
 
