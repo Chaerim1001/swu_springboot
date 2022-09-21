@@ -9,5 +9,9 @@
 <h2 th:text="${boardDto.getTitle()}"></h2>
 <p th:text="${boardDto.getContents()}"></p>
 
+<a th:href="@{'/post/edit/'+ ${boardDto.getId()}}">
+    <buttton> 수정 </buttton>
+</a>
+
 </body>
 </html>

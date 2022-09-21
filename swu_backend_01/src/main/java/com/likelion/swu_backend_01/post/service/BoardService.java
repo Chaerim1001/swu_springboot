@@ -35,5 +35,13 @@ public class BoardService {
 
         return boardDto;
     }
+
+    @Transactional
+    public Long updatePost(Long id, BoardDto boardDto) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다. " + id));
+        board.update(boardDto);
+
+        return id;
+    }
 }
 

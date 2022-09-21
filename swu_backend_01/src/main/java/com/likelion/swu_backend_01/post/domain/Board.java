@@ -1,5 +1,6 @@
 package com.likelion.swu_backend_01.post.domain;
 
+import com.likelion.swu_backend_01.post.dto.BoardDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -28,5 +29,10 @@ public class Board extends BaseTimeEntity{
         this.id=id;
         this.title=title;
         this.contents=contents;
+    }
+
+    public void update(BoardDto boardDto){
+        this.title = boardDto.getTitle();
+        this.contents = boardDto.getContents();
     }
 }
