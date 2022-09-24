@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class BoardController {
     private final BoardService boardService;
@@ -16,7 +18,10 @@ public class BoardController {
     }
 
     @GetMapping("/")
-    public String list(){
+    public String list(Model model){
+        List<BoardDto> boardDtoList = boardService.getboardList();
+        model.addAttribute("boardList", boardDtoList);
+
         return "board/list.html";
     }
 

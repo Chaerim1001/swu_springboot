@@ -6,6 +6,8 @@ import com.likelion.swu_backend_01.post.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +36,22 @@ public class BoardService {
                 .build();
 
         return boardDto;
+    }
+    @Transactional
+    public List<BoardDto> getboardList(){
+        List<Board> boards = boardRepository.findAll();
+        List<BoardDto> boardDtoList = new ArrayList<>();
+
+        for (Board board: boards){
+            BoardDto boardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .contents(board.getContents())
+                    .createdTime(board.getCreatedTime())
+                    .build();
+            boardDtoList.add(boardDto);
+        }
+        return boardDtoList;
     }
 
     @Transactional
