@@ -1,42 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>메인 화면</title>
 </head>
 <body>
-    <a th:href="@{/post}">글쓰기</a>
-    <br>
-    <br>
-    <form action="/post/search" method="GET">
-        <input name="keyword" type="text" placeholder="검색어를 입력해주세요">
-        <button type="submit"> 검색 </button>
-    </form>
-    <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>글제목</th>
-            <th>작성일</th>
-        </tr>
-        </thead>
+<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+<a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+<a th:href="@{/post}">글쓰기</a>
+<br>
+<br>
+<form action="/post/search" method="GET">
+    <input name="keyword" type="text" placeholder="검색어를 입력해주세요">
+    <button type="submit"> 검색 </button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>글제목</th>
+        <th>작성일</th>
+    </tr>
+    </thead>
 
-        <tbody>
-        <!-- CONTENTS !-->
-        <tr th:each="board : ${boardList}">
-            <td>
-                <span th:text="${board.id}"></span>
-            </td>
-            <td>
-                <a th:href="@{'/post/' + ${board.id}}">
-                    <span th:text="${board.title}"></span>
-                </a>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <tbody>
+    <!-- CONTENTS !-->
+    <tr th:each="board : ${boardList}">
+        <td>
+            <span th:text= "${board.id}"></span>
+        </td>
+        <td>
+            <a th:href="@{'/post/' + ${board.id}}">
+                <span th:text="${board.title}"></span>
+            </a>
+        </td>
+        <td>
+            <span th:text="${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
