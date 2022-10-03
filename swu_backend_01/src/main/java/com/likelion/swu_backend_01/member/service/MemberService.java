@@ -4,6 +4,8 @@ import com.likelion.swu_backend_01.member.domain.Member;
 import com.likelion.swu_backend_01.member.domain.Role;
 import com.likelion.swu_backend_01.member.dto.MemberDto;
 import com.likelion.swu_backend_01.member.repository.MemberRepository;
+import com.likelion.swu_backend_01.post.domain.Board;
+import com.likelion.swu_backend_01.post.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,5 +49,20 @@ public class MemberService implements UserDetailsService {
         }
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
+    }
+
+    @Transactional
+    public List<MemberDto> getMemberList(){
+        List<Member> members = memberRepository.findAll();
+        List<MemberDto> memberList = new ArrayList<>();
+
+        for (Member member: members){
+            MemberDto memberDto = MemberDto.builder()
+                    .id(member.getId())
+                    .email(member.getEmail())
+                    .build();
+            memberList.add(memberDto);
+        }
+        return memberList;
     }
 }
