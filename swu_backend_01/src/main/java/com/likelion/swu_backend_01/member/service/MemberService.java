@@ -4,8 +4,6 @@ import com.likelion.swu_backend_01.member.domain.Member;
 import com.likelion.swu_backend_01.member.domain.Role;
 import com.likelion.swu_backend_01.member.dto.MemberDto;
 import com.likelion.swu_backend_01.member.repository.MemberRepository;
-import com.likelion.swu_backend_01.post.domain.Board;
-import com.likelion.swu_backend_01.post.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,11 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -64,5 +62,15 @@ public class MemberService implements UserDetailsService {
             memberList.add(memberDto);
         }
         return memberList;
+    }
+
+    @Transactional()
+    public Map<String, String> validateHandling(Errors errors){
+        Map<String, String> validatorResult = new HashMap<>();
+        for(FieldError error: errors.getFieldErrors()){
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
     }
 }

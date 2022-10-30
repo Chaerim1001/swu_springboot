@@ -7,10 +7,13 @@ import com.likelion.swu_backend_01.post.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -24,7 +27,16 @@ public class MemberController {
     }
 
     @PostMapping("user/signup")
-    public String signUp(MemberDto memberDto) {
+    public String signUp(@Valid MemberDto memberDto, Errors errors, Model model) {
+        if(errors.hasErrors()){
+            model.addAttribute("MemberDto", memberDto);
+
+            Map<String, String> validatorResult = memberService.validateHandling(errors);
+            for(String key: validatorResult.keySet()){
+                model.addAttribute(key, validatorResult.get(key));
+            }
+            return "users/signup.html";
+        }
         memberService.joinUser(memberDto);
         return "redirect:/";
     }

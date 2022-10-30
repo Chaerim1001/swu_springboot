@@ -9,8 +9,16 @@
 <hr>
 
 <form th:action="@{/user/signup}" method="post">
-    <input type="text" name="email" placeholder="이메일 입력해주세요">
-    <input type="password" name="password" placeholder="비밀번호">
+    <div>
+        <label>아이디</label>
+        <input type="text" name="email" placeholder="이메일 입력해주세요">
+        <span th:style="${'color: red;'}" th:text="${valid_email}"></span>
+    </div>
+    <div>
+        <label>비밀번호</label>
+        <input type="password" name="password" placeholder="비밀번호">
+        <span th:style="${'color: red;'}" th:text="${valid_password}"></span>
+    </div>
     <button type="submit">가입하기</button>
 </form>
 </body>
