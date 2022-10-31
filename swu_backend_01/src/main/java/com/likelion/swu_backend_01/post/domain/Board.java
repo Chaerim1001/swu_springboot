@@ -24,11 +24,15 @@ public class Board extends BaseTimeEntity{
     @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
+    private String writer;
+
     @Builder
-    public Board(Long id, String title, String contents){
+    public Board(Long id, String title, String contents, String writer){
         this.id=id;
         this.title=title;
         this.contents=contents;
+        this.writer=writer;
     }
 
     public void update(BoardDto boardDto){

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>상세 페이지</title>
@@ -7,15 +7,17 @@
 <body>
 
 <h2 th:text="${boardDto.title}"></h2>
+<p th:text="${boardDto.writer}"></p>
 <p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdTime, 'yyyy-MM-dd HH:mm')}]]</p>
 <p th:inline="text">수정일 : [[${#temporals.format(boardDto.modifiedTime, 'yyyy-MM-dd HH:mm')}]]</p>
 <p th:text="${boardDto.contents}"></p>
 
-<a th:href="@{'/post/edit/'+ ${boardDto.id}}">
+<a th:href="@{'/post/edit/'+ ${boardDto.id}}" sec:authorize="isAuthenticated()"
+    th:if="${#authentication.getPrincipal().getUsername() == boardDto.writer}">
     <buttton> 수정 </buttton>
 </a>
 
-<form th:action="@{'/post/delete/'+ ${boardDto.id}}" th:method="delete">
+<form th:action="@{'/post/delete/'+ ${boardDto.id}}" sec:authorize="isAuthenticated()" th:method="delete" >
     <button type="submit">삭제</button>
 </form>
 </body>

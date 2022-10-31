@@ -3,6 +3,8 @@ package com.likelion.swu_backend_01.post.controller;
 
 import com.likelion.swu_backend_01.post.dto.BoardDto;
 import com.likelion.swu_backend_01.post.service.BoardService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,11 @@ public class BoardController {
 
     @PostMapping("/post")
     public String write(BoardDto boardDto){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails) principal;
+        String username = userDetails.getUsername();
+
+        boardDto.setWriter(username);
         boardService.savePost(boardDto);
         return "redirect:/";
     }

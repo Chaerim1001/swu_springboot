@@ -32,6 +32,7 @@ public class BoardService {
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
+                .writer(board.getWriter())
                 .createdTime(board.getCreatedTime())
                 .modifiedTime(board.getModifiedTime())
                 .build();
@@ -48,6 +49,7 @@ public class BoardService {
                     .id(board.getId())
                     .title(board.getTitle())
                     .contents(board.getContents())
+                    .writer(board.getWriter())
                     .createdTime(board.getCreatedTime())
                     .build();
             boardDtoList.add(boardDto);
