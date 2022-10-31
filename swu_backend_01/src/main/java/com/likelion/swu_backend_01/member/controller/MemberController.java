@@ -37,6 +37,8 @@ public class MemberController {
             }
             return "users/signup.html";
         }
+        memberService.checkEmailDuplication(memberDto); // 이메일 중복 검사
+
         memberService.joinUser(memberDto);
         return "redirect:/";
     }

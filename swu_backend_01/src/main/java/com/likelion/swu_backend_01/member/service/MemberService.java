@@ -73,4 +73,12 @@ public class MemberService implements UserDetailsService {
         }
         return validatorResult;
     }
+
+    @Transactional()
+    public void checkEmailDuplication(MemberDto memberDto){
+        boolean emailDuplicate = memberRepository.existsByEmail(memberDto.toEntity().getEmail());
+        if(emailDuplicate){
+            throw new IllegalStateException("이미 존재하는 이메일입니다.");
+        }
+    }
 }
