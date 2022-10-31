@@ -71,8 +71,14 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> searchPosts(String keyword){
-        List<Board> boards = boardRepository.findByTitleContaining(keyword);
+    public List<BoardDto> searchPosts(String type, String keyword){
+        List<Board> boards;
+        if(type.equals("title")){
+            boards = boardRepository.findByTitleContaining(keyword);
+        } else {
+            boards = boardRepository.findByWriterContaining(keyword);
+        }
+
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         if(boards.isEmpty()) return boardDtoList;
@@ -89,6 +95,7 @@ public class BoardService {
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
+                .writer(board.getWriter())
                 .createdTime(board.getCreatedTime())
                 .modifiedTime(board.getModifiedTime())
                 .build();
