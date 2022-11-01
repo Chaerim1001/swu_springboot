@@ -1,14 +1,13 @@
 package com.likelion.swu_backend_01.post.domain;
 
-import com.likelion.swu_backend_01.post.dto.BoardDto;
+import com.likelion.swu_backend_01.post.dto.BoardRequestDto;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
 @Getter
 @NoArgsConstructor
 @Entity
@@ -27,6 +26,10 @@ public class Board extends BaseTimeEntity{
     @Column(nullable = false)
     private String writer;
 
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id asc") // 정렬
+    private List<Comment> comments;
+
     @Builder
     public Board(Long id, String title, String contents, String writer){
         this.id=id;
@@ -35,8 +38,8 @@ public class Board extends BaseTimeEntity{
         this.writer=writer;
     }
 
-    public void update(BoardDto boardDto){
-        this.title = boardDto.getTitle();
-        this.contents = boardDto.getContents();
+    public void update(BoardRequestDto boardRequestDto){
+        this.title = boardRequestDto.getTitle();
+        this.contents = boardRequestDto.getContents();
     }
 }

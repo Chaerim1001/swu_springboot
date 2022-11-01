@@ -1,40 +1,39 @@
 package com.likelion.swu_backend_01.post.dto;
 
 import com.likelion.swu_backend_01.post.domain.Board;
+import com.likelion.swu_backend_01.post.domain.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class BoardDto {
+public class CommentRequestDto {
     private Long id;
-    private String title;
-    private String contents;
-
+    private String comment;
     private String writer;
+    private Board board;
     private LocalDateTime createdTime;
     private LocalDateTime modifiedTime;
 
-    public Board toEntity(){
-        Board build = Board.builder()
+    public Comment toEntity(){
+        Comment build = Comment.builder()
                 .id(id)
-                .title(title)
-                .contents(contents)
+                .comment(comment)
                 .writer(writer)
+                .board(board)
                 .build();
         return build;
     }
 
     @Builder
-    public BoardDto(Long id, String title, String contents, String writer, LocalDateTime createdTime, LocalDateTime modifiedTime){
+    public CommentRequestDto(Long id, String comment, String writer, Board board, LocalDateTime createdTime, LocalDateTime modifiedTime){
         this.id=id;
-        this.title=title;
-        this.contents=contents;
+        this.comment=comment;
         this.writer=writer;
+        this.board=board;
         this.createdTime=createdTime;
         this.modifiedTime=modifiedTime;
     }

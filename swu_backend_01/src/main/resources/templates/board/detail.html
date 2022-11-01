@@ -6,20 +6,56 @@
 </head>
 <body>
 
-<h2 th:text="${boardDto.title}"></h2>
-<p th:text="${boardDto.writer}"></p>
-<p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdTime, 'yyyy-MM-dd HH:mm')}]]</p>
-<p th:inline="text">수정일 : [[${#temporals.format(boardDto.modifiedTime, 'yyyy-MM-dd HH:mm')}]]</p>
-<p th:text="${boardDto.contents}"></p>
+<h2 th:text="${boardResponseDto.title}"></h2>
+<p th:text="${boardResponseDto.writer}"></p>
+<p th:inline="text">작성일 : [[${#temporals.format(boardResponseDto.createdTime, 'yyyy-MM-dd HH:mm')}]]</p>
+<p th:inline="text">수정일 : [[${#temporals.format(boardResponseDto.modifiedTime, 'yyyy-MM-dd HH:mm')}]]</p>
+<p th:text="${boardResponseDto.contents}"></p>
 
-<a th:href="@{'/post/edit/'+ ${boardDto.id}}" sec:authorize="isAuthenticated()"
-    th:if="${#authentication.getPrincipal().getUsername() == boardDto.writer}">
+<a th:href="@{'/post/edit/'+ ${boardResponseDto.id}}" sec:authorize="isAuthenticated()"
+    th:if="${#authentication.getPrincipal().getUsername() == boardResponseDto.writer}">
     <buttton> 수정 </buttton>
 </a>
 
-<form th:action="@{'/post/delete/'+ ${boardDto.id}}" sec:authorize="isAuthenticated()" th:method="delete" >
+<form th:action="@{'/post/delete/'+ ${boardResponseDto.id}}" sec:authorize="isAuthenticated()" th:method="delete" >
     <button type="submit">삭제</button>
 </form>
+
+<br>
+<br>
+<br>
+
+    <form th:action="@{'/post/comment/'+ ${boardResponseDto.id}}" sec:authorize="isAuthenticated()" th:method="post">
+        <div> Write a Comment</div>
+        <div class="card-body">
+            <textarea id="comment" name="comment" rows="4" placeholder="댓글을 입력하세요"></textarea>
+        </div>
+            <button type="submit">댓글 등록</button>
+    </form>
+
+<br>
+
+<table>
+    <thead>
+    <tr>
+        <th>작성자</th>
+        <th>댓글</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="comment : ${comments}">
+
+        <td>
+            <span th:text="${comment.writer}"></span>
+        </td>
+        <td>
+            <span th:text="${comment.comment}"></span>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
 

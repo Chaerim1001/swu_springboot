@@ -1,7 +1,8 @@
 package com.likelion.swu_backend_01.post.service;
 
 import com.likelion.swu_backend_01.post.domain.Board;
-import com.likelion.swu_backend_01.post.dto.BoardDto;
+import com.likelion.swu_backend_01.post.dto.BoardRequestDto;
+import com.likelion.swu_backend_01.post.dto.BoardResponseDto;
 import com.likelion.swu_backend_01.post.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,49 +20,50 @@ public class BoardService {
     }
 
     @Transactional
-    public Long savePost(BoardDto boardDto){
-        return boardRepository.save(boardDto.toEntity()).getId();
+    public Long savePost(BoardRequestDto boardRequestDto){
+        return boardRepository.save(boardRequestDto.toEntity()).getId();
     }
 
     @Transactional
-    public BoardDto getPost(Long id){
+    public BoardResponseDto getPost(Long id){
         Optional<Board> boardWrapper = boardRepository.findById(id);
         Board board = boardWrapper.get();
 
-        BoardDto boardDto = BoardDto.builder()
+        BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())
                 .writer(board.getWriter())
+                .comments(board.getComments())
                 .createdTime(board.getCreatedTime())
                 .modifiedTime(board.getModifiedTime())
                 .build();
 
-        return boardDto;
+        return boardResponseDto;
     }
     @Transactional
-    public List<BoardDto> getboardList(){
+    public List<BoardResponseDto> getboardList(){
         List<Board> boards = boardRepository.findAll();
-        List<BoardDto> boardDtoList = new ArrayList<>();
+        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
 
         for (Board board: boards){
-            BoardDto boardDto = BoardDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                     .id(board.getId())
                     .title(board.getTitle())
                     .contents(board.getContents())
                     .writer(board.getWriter())
                     .createdTime(board.getCreatedTime())
                     .build();
-            boardDtoList.add(boardDto);
+            boardResponseDtoList.add(boardResponseDto);
         }
-        return boardDtoList;
+        return boardResponseDtoList;
     }
 
     @Transactional
-    public Long updatePost(Long id, BoardDto boardDto) {
+    public Long updatePost(Long id, BoardRequestDto boardRequestDto) {
         Board board = boardRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다. " + id));
-        board.update(boardDto);
+        board.update(boardRequestDto);
 
         return id;
     }
@@ -71,7 +73,7 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> searchPosts(String type, String keyword){
+    public List<BoardResponseDto> searchPosts(String type, String keyword){
         List<Board> boards;
         if(type.equals("title")){
             boards = boardRepository.findByTitleContaining(keyword);
@@ -79,19 +81,17 @@ public class BoardService {
             boards = boardRepository.findByWriterContaining(keyword);
         }
 
-        List<BoardDto> boardDtoList = new ArrayList<>();
-
-        if(boards.isEmpty()) return boardDtoList;
-
+        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+        if(boards.isEmpty()) return boardResponseDtoList;
         for(Board board: boards){
-            boardDtoList.add(this.convertEntityToDto(board));
+            boardResponseDtoList.add(this.convertEntityToDto(board));
         }
 
-        return boardDtoList;
+        return boardResponseDtoList;
     }
 
-    private  BoardDto convertEntityToDto(Board board){
-        return BoardDto.builder()
+    private  BoardResponseDto convertEntityToDto(Board board){
+        return BoardResponseDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
                 .contents(board.getContents())

@@ -3,7 +3,6 @@ package com.likelion.swu_backend_01.member.controller;
 import com.likelion.swu_backend_01.member.dto.MemberDto;
 import com.likelion.swu_backend_01.member.service.MemberService;
 
-import com.likelion.swu_backend_01.post.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

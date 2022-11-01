@@ -1,7 +1,8 @@
 package com.likelion.swu_backend_01.post.controller;
 
-
-import com.likelion.swu_backend_01.post.dto.BoardDto;
+import com.likelion.swu_backend_01.post.domain.Comment;
+import com.likelion.swu_backend_01.post.dto.BoardRequestDto;
+import com.likelion.swu_backend_01.post.dto.BoardResponseDto;
 import com.likelion.swu_backend_01.post.service.BoardService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +22,8 @@ public class BoardController {
 
     @GetMapping("/")
     public String list(Model model){
-        List<BoardDto> boardDtoList = boardService.getboardList();
-        model.addAttribute("boardList", boardDtoList);
+        List<BoardResponseDto> boardResponseDtoList = boardService.getboardList();
+        model.addAttribute("boardResponseDtoList", boardResponseDtoList);
 
         return "board/list.html";
     }
@@ -33,33 +34,37 @@ public class BoardController {
     }
 
     @PostMapping("/post")
-    public String write(BoardDto boardDto){
+    public String write(BoardRequestDto boardRequestDto){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String username = userDetails.getUsername();
 
-        boardDto.setWriter(username);
-        boardService.savePost(boardDto);
+        boardRequestDto.setWriter(username);
+        boardService.savePost(boardRequestDto);
         return "redirect:/";
     }
-
+    
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long id, Model model){
-        BoardDto boardDto = boardService.getPost(id);
-        model.addAttribute("boardDto", boardDto);
+        BoardResponseDto boardResponseDto = boardService.getPost(id);
+        List<Comment> comments = boardResponseDto.getComments();
+        if(comments != null && !comments.isEmpty()){
+            model.addAttribute("comments", comments);
+        }
+        model.addAttribute("boardResponseDto", boardResponseDto);
         return "board/detail.html";
     }
 
     @GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long id, Model model){
-        BoardDto boardDto = boardService.getPost(id);
-        model.addAttribute("boardDto", boardDto);
+        BoardResponseDto boardResponseDto = boardService.getPost(id);
+        model.addAttribute("boardResponseDto", boardResponseDto);
         return "board/update.html";
     }
 
     @PutMapping("/post/edit/{no}")
-    public String update(@PathVariable("no") Long id, BoardDto boardDto){
-        boardService.updatePost(id, boardDto);
+    public String update(@PathVariable("no") Long id, BoardRequestDto boardRequestDto){
+        boardService.updatePost(id, boardRequestDto);
         return "redirect:/post/{no}";
     }
     
@@ -71,8 +76,8 @@ public class BoardController {
 
     @GetMapping("post/search")
     public String search(@RequestParam(value = "type") String type, @RequestParam(value = "keyword") String keyword, Model model){
-        List<BoardDto> boardDtoList = boardService.searchPosts(type, keyword);
-        model.addAttribute("boardList", boardDtoList);
+        List<BoardResponseDto> boardResponseDtoList = boardService.searchPosts(type, keyword);
+        model.addAttribute("boardResponseDtoList", boardResponseDtoList);
 
         return "board/list.html";
     }
