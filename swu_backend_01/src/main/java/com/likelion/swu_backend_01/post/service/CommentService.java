@@ -30,4 +30,20 @@ public class CommentService {
 
         return commentRequestDto.getId();
     }
+    /* UPDATE */
+    @Transactional
+    public Long update(Long id, Long comment_id, CommentRequestDto commentRequestDto) {
+        Board board = boardRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + comment_id));
+
+        if(comment.getBoard().getId() != board.getId()){
+            throw new IllegalArgumentException("잘못된 요청입니다.");
+        }
+
+        comment.update(commentRequestDto.getComment());
+        return comment.getId();
+    }
 }

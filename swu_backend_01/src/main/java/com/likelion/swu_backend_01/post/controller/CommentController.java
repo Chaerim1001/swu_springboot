@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @AllArgsConstructor
@@ -25,5 +26,10 @@ public class CommentController {
         commentRequestDto.setWriter(username);
         commentService.saveComment(id, commentRequestDto);
         return "redirect:/post/{id}";
+    }
+
+    @PutMapping({"/post/comment/{id}/{comment_id}"})
+    public Long update(@PathVariable Long id, @PathVariable Long comment_id, CommentRequestDto commentRequestDto) {
+        return commentService.update(id,comment_id, commentRequestDto);
     }
 }

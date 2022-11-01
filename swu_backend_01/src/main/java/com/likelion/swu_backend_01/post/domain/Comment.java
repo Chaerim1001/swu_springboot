@@ -27,12 +27,15 @@ public class Comment extends BaseTimeEntity{
     @JoinColumn(name = "board_id")
     private Board board;
 
-
     @Builder
     public Comment(Long id, String comment, String writer, Board board){
         this.id=id;
         this.comment=comment;
         this.writer=writer;
         this.board=board;
+    }
+
+    public void update(String comment) {
+        this.comment = comment;
     }
 }
