@@ -9,7 +9,7 @@
 <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}" th:href="@{/admin}">관리자 페이지</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
 <a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
-<a th:href="@{/post}">글쓰기</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/post}">글쓰기</a>
 <br>
 <br>
 <form action="/post/search" method="GET">
