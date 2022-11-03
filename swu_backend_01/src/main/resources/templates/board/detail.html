@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>상세 페이지</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
 <body>
 
@@ -48,10 +51,12 @@
             <span th:text="${comment.writer}"></span>
         </td>
         <td>
-            <span th:text="${comment.comment}"></span>
+            <span th:id="|${comment.id}-comment|" th:text="${comment.comment}"></span>
+            <textarea th:hidden="true" th:id="|${comment.id}-textarea|" th:text="${comment.comment}"></textarea>
         </td>
         <td>
-            <button sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}">수정</button>
+            <button  th:id="|${comment.id}-editButton|" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:onclick="|editComment(${comment.id})|">수정</button>
+            <button  th:hidden="true" th:id="|${comment.id}-submitButton|" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:onclick="|submitEditComment(${comment.id})|">수정</button>
         </td>
         <td>
             <button sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}">삭제</button>
@@ -59,6 +64,43 @@
     </tr>
     </tbody>
 </table>
+<script>
+   function editComment(id){
+       console.log(id);
+       $(`#${id}-textarea`).show();
+       $(`#${id}-submitButton`).show();
+       $(`#${id}-editButton`).hide();
+       $(`#${id}-comment`).hide();
+
+       let comment = $(`#${id}-comment`).text().trim();
+       $(`#${id}-textarea`).val(comment);
+   }
+
+    function submitEditComment(id){
+        let comment = $(`#${id}-textarea`).val().trim();
+
+        if(comment == null || comment.length === 0){
+            return;
+        }
+
+        $.ajax({
+            type: "PUT",
+            url: `comment/${id}`,
+            data: {
+                "comment": comment
+            },
+            beforeSend: function (jqXHR, settings) {
+                var header = $("meta[name='_csrf_header']").attr("content");
+                var token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+            success: function (response){
+                alert('댓글 변경에 성공하였습니다');
+                window.location.reload();
+            }
+        })
+    }
+</script>
 </body>
 </html>
 

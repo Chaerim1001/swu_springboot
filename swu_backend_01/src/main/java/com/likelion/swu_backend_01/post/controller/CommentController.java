@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @AllArgsConstructor
@@ -28,8 +29,9 @@ public class CommentController {
         return "redirect:/post/{id}";
     }
 
-    @PutMapping({"/post/comment/{id}/{comment_id}"})
-    public Long update(@PathVariable Long id, @PathVariable Long comment_id, CommentRequestDto commentRequestDto) {
-        return commentService.update(id,comment_id, commentRequestDto);
+    @PutMapping({"/post/comment/{comment_id}"})
+    @ResponseBody
+    public Long update(@PathVariable Long comment_id, CommentRequestDto commentRequestDto) {
+        return commentService.update(comment_id, commentRequestDto);
     }
 }
