@@ -32,20 +32,32 @@ public class CommentService {
     }
     /* UPDATE */
     @Transactional
-    public Long update(Long comment_id, CommentRequestDto commentRequestDto) {
+    public Long update(Long board_id, Long comment_id, CommentRequestDto commentRequestDto) {
+        Board board = boardRepository.findById(board_id).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글이 존재하지 않습니다. " + board_id));
+
         Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + comment_id));
+
+        if(!board_id.equals(comment.getBoard().getId())){
+            throw new IllegalArgumentException("게시글과 댓긂이 매칭되지 않습니다.");
+        }
 
         comment.update(commentRequestDto.getComment());
         return comment.getId();
     }
 
     @Transactional
-    public void delete(Long comment_id) {
+    public void delete(Long board_id, Long comment_id) {
+        Board board = boardRepository.findById(board_id).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글이 존재하지 않습니다. " + board_id));
+
         Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + comment_id));
 
+        if(!board_id.equals(comment.getBoard().getId())){
+            throw new IllegalArgumentException("게시글과 댓긂이 매칭되지 않습니다.");
+        }
         commentRepository.delete(comment);
     }
-
 }

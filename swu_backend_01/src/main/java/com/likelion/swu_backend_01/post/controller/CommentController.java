@@ -15,8 +15,8 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/post/comment/{id}")
-    public String write(@PathVariable Long id, CommentRequestDto commentRequestDto){
+    @PostMapping("/comment/{id}")
+    public String write(@PathVariable("id") Long id, CommentRequestDto commentRequestDto){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails) principal;
         String username = userDetails.getUsername();
@@ -26,14 +26,16 @@ public class CommentController {
         return "redirect:/post/{id}";
     }
 
-    @PutMapping({"/post/comment/{comment_id}"})
+    @PutMapping({"/comment/{board_id}/{comment_id}"})
     @ResponseBody
-    public Long update(@PathVariable Long comment_id, CommentRequestDto commentRequestDto) {
-        return commentService.update(comment_id, commentRequestDto);
+    public Long update(@PathVariable("board_id") Long board_id, @PathVariable("comment_id") Long comment_id, CommentRequestDto commentRequestDto) {
+        return commentService.update(board_id, comment_id, commentRequestDto);
     }
 
-    @DeleteMapping({"post/comment/{comment_id}"})
-    public void delete(@PathVariable Long comment_id) {
-        commentService.delete(comment_id);
+    @DeleteMapping({"/comment/{board_id}/{comment_id}"})
+    public String delete(@PathVariable("board_id") Long board_id, @PathVariable("comment_id") Long comment_id) {
+        commentService.delete(board_id, comment_id);
+        System.out.println(board_id);
+        return "redirect:/post/{board_id}";
     }
 }
