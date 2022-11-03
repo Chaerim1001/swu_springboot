@@ -25,7 +25,7 @@
 </form>
 
 <br>
-    <form th:action="@{'/post/comment/'+ ${boardResponseDto.id}}" sec:authorize="isAuthenticated()" th:method="post">
+    <form th:action="@{'/comment/'+ ${boardResponseDto.id}}" sec:authorize="isAuthenticated()" th:method="post">
         <hr>
         <div> Write a Comment</div>
         <div class="card-body">
@@ -56,17 +56,18 @@
         </td>
         <td>
             <button  th:id="|${comment.id}-editButton|" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:onclick="|editComment(${comment.id})|">수정</button>
-            <button  th:hidden="true" th:id="|${comment.id}-submitButton|" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:onclick="|submitEditComment(${comment.id})|">수정</button>
+            <button  th:hidden="true" th:id="|${comment.id}-submitButton|" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:onclick="|submitEditComment(${boardResponseDto.id}, ${comment.id})|">수정</button>
         </td>
         <td>
-            <button sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}">삭제</button>
+            <form th:action="@{'/comment/' + ${boardResponseDto.id} + '/' + ${comment.id}}" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" th:method="delete" >
+                <button type="submit">삭제</button>
+            </form>
         </td>
     </tr>
     </tbody>
 </table>
 <script>
    function editComment(id){
-       console.log(id);
        $(`#${id}-textarea`).show();
        $(`#${id}-submitButton`).show();
        $(`#${id}-editButton`).hide();
@@ -76,8 +77,8 @@
        $(`#${id}-textarea`).val(comment);
    }
 
-    function submitEditComment(id){
-        let comment = $(`#${id}-textarea`).val().trim();
+    function submitEditComment(board_id, comment_id){
+        let comment = $(`#${comment_id}-textarea`).val().trim();
 
         if(comment == null || comment.length === 0){
             return;
@@ -85,7 +86,7 @@
 
         $.ajax({
             type: "PUT",
-            url: `comment/${id}`,
+            url: `/comment/${board_id}/${comment_id}`,
             data: {
                 "comment": comment
             },
