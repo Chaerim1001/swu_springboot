@@ -33,11 +33,19 @@ public class CommentService {
     /* UPDATE */
     @Transactional
     public Long update(Long comment_id, CommentRequestDto commentRequestDto) {
-        System.out.println(commentRequestDto.getComment());
         Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + comment_id));
 
         comment.update(commentRequestDto.getComment());
         return comment.getId();
     }
+
+    @Transactional
+    public void delete(Long comment_id) {
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다. " + comment_id));
+
+        commentRepository.delete(comment);
+    }
+
 }

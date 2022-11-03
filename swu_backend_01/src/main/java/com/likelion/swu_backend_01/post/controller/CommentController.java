@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @AllArgsConstructor
@@ -33,5 +30,10 @@ public class CommentController {
     @ResponseBody
     public Long update(@PathVariable Long comment_id, CommentRequestDto commentRequestDto) {
         return commentService.update(comment_id, commentRequestDto);
+    }
+
+    @DeleteMapping({"post/comment/{comment_id}"})
+    public void delete(@PathVariable Long comment_id) {
+        commentService.delete(comment_id);
     }
 }
