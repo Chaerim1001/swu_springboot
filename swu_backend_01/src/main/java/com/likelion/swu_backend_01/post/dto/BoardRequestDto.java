@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class BoardRequestDto {
@@ -15,8 +13,6 @@ public class BoardRequestDto {
     private String contents;
 
     private String writer;
-    private LocalDateTime createdTime;
-    private LocalDateTime modifiedTime;
 
     public Board toEntity(){
         Board build = Board.builder()
@@ -29,12 +25,10 @@ public class BoardRequestDto {
     }
 
     @Builder
-    public BoardRequestDto(Long id, String title, String contents, String writer, LocalDateTime createdTime, LocalDateTime modifiedTime){
+    public BoardRequestDto(Long id, String title, String contents, String writer){
         this.id=id;
         this.title=title;
         this.contents=contents;
         this.writer=writer;
-        this.createdTime=createdTime;
-        this.modifiedTime=modifiedTime;
     }
 }

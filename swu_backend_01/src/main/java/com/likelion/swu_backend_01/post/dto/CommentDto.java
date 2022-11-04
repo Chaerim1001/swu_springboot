@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CommentRequestDto {
+public class CommentDto {
     private Long id;
     private String comment;
     private String writer;
@@ -29,7 +29,7 @@ public class CommentRequestDto {
     }
 
     @Builder
-    public CommentRequestDto(Long id, String comment, String writer, Board board, LocalDateTime createdTime, LocalDateTime modifiedTime){
+    public CommentDto(Long id, String comment, String writer, Board board, LocalDateTime createdTime, LocalDateTime modifiedTime){
         this.id=id;
         this.comment=comment;
         this.writer=writer;
@@ -38,3 +38,4 @@ public class CommentRequestDto {
         this.modifiedTime=modifiedTime;
     }
 }
+
