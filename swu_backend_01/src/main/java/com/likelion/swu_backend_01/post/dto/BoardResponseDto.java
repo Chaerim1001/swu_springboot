@@ -15,13 +15,13 @@ public class BoardResponseDto {
     private String title;
     private String contents;
     private String writer;
-    private List<Comment> comments;
+    private List<CommentDto> comments;
     private LocalDateTime createdTime;
     private LocalDateTime modifiedTime;
 
 
     @Builder
-    public BoardResponseDto(Long id, String title, String contents, String writer, List<Comment> comments,
+    public BoardResponseDto(Long id, String title, String contents, String writer, List<CommentDto> comments,
                             LocalDateTime createdTime, LocalDateTime modifiedTime){
         this.id=id;
         this.title=title;

@@ -3,6 +3,7 @@ package com.likelion.swu_backend_01.post.controller;
 import com.likelion.swu_backend_01.post.domain.Comment;
 import com.likelion.swu_backend_01.post.dto.BoardRequestDto;
 import com.likelion.swu_backend_01.post.dto.BoardResponseDto;
+import com.likelion.swu_backend_01.post.dto.CommentDto;
 import com.likelion.swu_backend_01.post.service.BoardService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,7 +48,7 @@ public class BoardController {
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long id, Model model){
         BoardResponseDto boardResponseDto = boardService.getPost(id);
-        List<Comment> comments = boardResponseDto.getComments();
+        List<CommentDto> comments = boardResponseDto.getComments();
         if(comments != null && !comments.isEmpty()){
             model.addAttribute("comments", comments);
         }
